@@ -215,13 +215,13 @@ const discoverPlugins = (): void => {
 };
 
 const processPlugin = (pluginId: string): void => {
-  const importedPlugin = safeRequire(pluginId) as EslintPlugin | null;
+  const importedPluginRaw = safeRequire(pluginId) as EslintPlugin | null;
 
-  if (!importedPlugin || typeof importedPlugin !== 'object' || !importedPlugin.rules) {
+  if (!importedPluginRaw || typeof importedPluginRaw !== 'object' || !importedPluginRaw.rules) {
     return;
   }
 
-  importedPlugin.id = pluginId;
+  const importedPlugin = { ...importedPluginRaw, id: pluginId };
   const pluginRules = importedPlugin.rules;
   const pluginName = convertPluginId(pluginId);
 
